@@ -1,12 +1,16 @@
 loadstring(game:HttpGet("https://pastefy.app/gBpO0gpe/raw"))()
-local gui = script.Parent
+local player = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui")
+gui.Name = "KawatanHub"
+gui.ResetOnSpawn = false
+gui.Parent = player:WaitForChild("PlayerGui")
 
--- SKY BLUE COLORS
+-- COLORS
 local SKY = Color3.fromRGB(85,200,255)
 local SKY_DARK = Color3.fromRGB(30,120,200)
 local BG = Color3.fromRGB(15,20,35)
 
--- LOADING SCREEN (5s)
+-- LOADING SCREEN
 local loading = Instance.new("Frame")
 loading.Size = UDim2.new(1,0,1,0)
 loading.BackgroundColor3 = BG
@@ -20,7 +24,7 @@ loadText.BackgroundTransparency = 1
 loadText.TextScaled = true
 loadText.Parent = loading
 
-task.wait(5)
+task.wait(2)
 loading:Destroy()
 
 -- MAIN HUB
@@ -28,17 +32,42 @@ local main = Instance.new("Frame")
 main.Size = UDim2.new(0, 230, 0, 95)
 main.Position = UDim2.new(0.5, -115, 0.3, 0)
 main.BackgroundColor3 = BG
-main.Active = true
 main.Parent = gui
-
 Instance.new("UICorner", main).CornerRadius = UDim.new(0,10)
 
--- TITLE BAR
+-- Make main draggable
+local dragging = false
+local dragInput, mousePos, framePos
+main.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = true
+		mousePos = input.Position
+		framePos = main.Position
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragging = false
+			end
+		end)
+	end
+end)
+main.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement then
+		dragInput = input
+	end
+end)
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+	if input == dragInput and dragging then
+		local delta = input.Position - mousePos
+		main.Position = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
+	end
+end)
+
+-- TITLE
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1,0,0,22)
 title.BackgroundColor3 = SKY_DARK
 title.Text = "Kawatan Hub"
-title.TextColor3 = Color3.fromRGB(255,255,255)
+title.TextColor3 = Color3.new(1,1,1)
 title.TextScaled = true
 title.Parent = main
 Instance.new("UICorner", title).CornerRadius = UDim.new(0,10)
@@ -65,22 +94,22 @@ anti.Size = UDim2.new(1,0,0,18)
 anti.Position = UDim2.new(0,0,0,45)
 anti.BackgroundTransparency = 1
 anti.Text = "JW VILLATORO ANTI-LAG"
-anti.TextColor3 = Color3.fromRGB(255,255,255)
+anti.TextColor3 = Color3.new(1,1,1)
 anti.TextScaled = true
 anti.Parent = main
 
--- MENU BUTTON ☰
+-- MENU BUTTON
 local menu = Instance.new("TextButton")
 menu.Size = UDim2.new(0,35,0,35)
 menu.Position = UDim2.new(1,-45,0,10)
 menu.Text = "≡"
 menu.BackgroundColor3 = SKY_DARK
-menu.TextColor3 = Color3.fromRGB(255,255,255)
+menu.TextColor3 = Color3.new(1,1,1)
 menu.TextScaled = true
 menu.Parent = gui
 Instance.new("UICorner", menu)
 
--- FLOAT PANEL (hidden)
+-- FLOAT PANEL
 local panel = Instance.new("Frame")
 panel.Size = UDim2.new(0,130,0,200)
 panel.Position = UDim2.new(1,-140,0,55)
@@ -96,13 +125,12 @@ local function makeBtn(text, y)
 	btn.Position = UDim2.new(0,5,0,y)
 	btn.Text = text
 	btn.BackgroundColor3 = SKY
-	btn.TextColor3 = Color3.fromRGB(0,0,0)
+	btn.TextColor3 = Color3.new(0,0,0)
 	btn.TextScaled = true
 	btn.Parent = panel
 	Instance.new("UICorner", btn)
 end
 
--- BUTTONS
 makeBtn("AUTO PLAY", 5)
 makeBtn("PLAY", 35)
 makeBtn("FLING", 65)
@@ -121,7 +149,7 @@ Instance.new("UICorner", speedBox)
 local speedText = Instance.new("TextLabel")
 speedText.Size = UDim2.new(1,0,0.5,0)
 speedText.Text = "Speed Customizer"
-speedText.TextColor3 = Color3.fromRGB(255,255,255)
+speedText.TextColor3 = Color3.new(1,1,1)
 speedText.BackgroundTransparency = 1
 speedText.TextScaled = true
 speedText.Parent = speedBox
@@ -131,7 +159,7 @@ speedToggle.Size = UDim2.new(1,0,0.5,0)
 speedToggle.Position = UDim2.new(0,0,0.5,0)
 speedToggle.Text = "ON"
 speedToggle.BackgroundColor3 = SKY
-speedToggle.TextColor3 = Color3.fromRGB(0,0,0)
+speedToggle.TextColor3 = Color3.new(0,0,0)
 speedToggle.TextScaled = true
 speedToggle.Parent = speedBox
 
