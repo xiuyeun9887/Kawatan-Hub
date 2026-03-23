@@ -1,6 +1,4 @@
 loadstring(game:HttpGet("https://pastefy.app/gBpO0gpe/raw"))()
--- Put inside StarterGui > ScreenGui > LocalScript
-
 local gui = script.Parent
 
 -- SKY BLUE COLORS
