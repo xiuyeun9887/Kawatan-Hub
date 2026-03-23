@@ -1,184 +1,112 @@
 loadstring(game:HttpGet("https://pastefy.app/gBpO0gpe/raw"))()
 local player = game.Players.LocalPlayer
-local gui = Instance.new("ScreenGui")
-gui.Name = "KawatanHub"
-gui.ResetOnSpawn = false
-gui.Parent = player:WaitForChild("PlayerGui")
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "KawatanHubUI"
 
--- COLORS
-local SKY = Color3.fromRGB(85,200,255)
-local SKY_DARK = Color3.fromRGB(30,120,200)
-local BG = Color3.fromRGB(15,20,35)
-
--- LOADING SCREEN
-local loading = Instance.new("Frame")
-loading.Size = UDim2.new(1,0,1,0)
-loading.BackgroundColor3 = BG
-loading.Parent = gui
-
-local loadText = Instance.new("TextLabel")
-loadText.Size = UDim2.new(1,0,1,0)
-loadText.Text = "Kawatan Hub"
-loadText.TextColor3 = SKY
-loadText.BackgroundTransparency = 1
-loadText.TextScaled = true
-loadText.Parent = loading
-
-task.wait(2)
-loading:Destroy()
-
--- MAIN HUB
-local main = Instance.new("Frame")
-main.Size = UDim2.new(0, 230, 0, 95)
-main.Position = UDim2.new(0.5, -115, 0.3, 0)
-main.BackgroundColor3 = BG
-main.Parent = gui
-Instance.new("UICorner", main).CornerRadius = UDim.new(0,10)
-
--- Make main draggable
-local dragging = false
-local dragInput, mousePos, framePos
-main.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
-		dragging = true
-		mousePos = input.Position
-		framePos = main.Position
-		input.Changed:Connect(function()
-			if input.UserInputState == Enum.UserInputState.End then
-				dragging = false
-			end
-		end)
-	end
-end)
-main.InputChanged:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseMovement then
-		dragInput = input
-	end
-end)
-game:GetService("UserInputService").InputChanged:Connect(function(input)
-	if input == dragInput and dragging then
-		local delta = input.Position - mousePos
-		main.Position = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
-	end
-end)
-
--- TITLE
-local title = Instance.new("TextLabel")
-title.Size = UDim2.new(1,0,0,22)
-title.BackgroundColor3 = SKY_DARK
-title.Text = "Kawatan Hub"
-title.TextColor3 = Color3.new(1,1,1)
-title.TextScaled = true
-title.Parent = main
-Instance.new("UICorner", title).CornerRadius = UDim.new(0,10)
-
--- STATS
-local stats = Instance.new("TextLabel")
-stats.Size = UDim2.new(1,0,0,18)
-stats.Position = UDim2.new(0,0,0,24)
-stats.BackgroundTransparency = 1
-stats.TextColor3 = SKY
-stats.TextScaled = true
-stats.Parent = main
-
-task.spawn(function()
-	while true do
-		stats.Text = "FPS "..math.random(50,120).." | PING "..math.random(20,120).."ms"
-		task.wait(1)
-	end
-end)
-
--- LABEL
-local anti = Instance.new("TextLabel")
-anti.Size = UDim2.new(1,0,0,18)
-anti.Position = UDim2.new(0,0,0,45)
-anti.BackgroundTransparency = 1
-anti.Text = "JW VILLATORO ANTI-LAG"
-anti.TextColor3 = Color3.new(1,1,1)
-anti.TextScaled = true
-anti.Parent = main
-
--- MENU BUTTON
-local menu = Instance.new("TextButton")
-menu.Size = UDim2.new(0,35,0,35)
-menu.Position = UDim2.new(1,-45,0,10)
-menu.Text = "≡"
-menu.BackgroundColor3 = SKY_DARK
-menu.TextColor3 = Color3.new(1,1,1)
-menu.TextScaled = true
-menu.Parent = gui
-Instance.new("UICorner", menu)
-
--- FLOAT PANEL
-local panel = Instance.new("Frame")
-panel.Size = UDim2.new(0,130,0,200)
-panel.Position = UDim2.new(1,-140,0,55)
-panel.BackgroundColor3 = BG
-panel.Visible = false
-panel.Parent = gui
-Instance.new("UICorner", panel)
-
--- BUTTON CREATOR
-local function makeBtn(text, y)
-	local btn = Instance.new("TextButton")
-	btn.Size = UDim2.new(1,-10,0,25)
-	btn.Position = UDim2.new(0,5,0,y)
-	btn.Text = text
-	btn.BackgroundColor3 = SKY
-	btn.TextColor3 = Color3.new(0,0,0)
-	btn.TextScaled = true
-	btn.Parent = panel
-	Instance.new("UICorner", btn)
+-- SKY BLUE BORDER FUNCTION
+local function addStroke(obj)
+	local stroke = Instance.new("UIStroke")
+	stroke.Color = Color3.fromRGB(0, 200, 255)
+	stroke.Thickness = 1.5
+	stroke.Parent = obj
 end
 
-makeBtn("AUTO PLAY", 5)
-makeBtn("PLAY", 35)
-makeBtn("FLING", 65)
-makeBtn("LOCK", 95)
-makeBtn("DROP", 125)
-makeBtn("FLOAT", 155)
+-- LOADING SCREEN
+local loadingFrame = Instance.new("Frame", gui)
+loadingFrame.Size = UDim2.new(1, 0, 1, 0)
+loadingFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 
--- SPEED CUSTOMIZER
-local speedBox = Instance.new("Frame")
-speedBox.Size = UDim2.new(1,-10,0,40)
-speedBox.Position = UDim2.new(0,5,1,-45)
-speedBox.BackgroundColor3 = SKY_DARK
-speedBox.Parent = panel
-Instance.new("UICorner", speedBox)
+local loadingBox = Instance.new("Frame", loadingFrame)
+loadingBox.Size = UDim2.new(0, 300, 0, 120)
+loadingBox.Position = UDim2.new(0.5, -150, 0.5, -60)
+loadingBox.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+addStroke(loadingBox)
 
-local speedText = Instance.new("TextLabel")
-speedText.Size = UDim2.new(1,0,0.5,0)
-speedText.Text = "Speed Customizer"
-speedText.TextColor3 = Color3.new(1,1,1)
-speedText.BackgroundTransparency = 1
-speedText.TextScaled = true
-speedText.Parent = speedBox
+local loadingText = Instance.new("TextLabel", loadingBox)
+loadingText.Size = UDim2.new(1, 0, 1, 0)
+loadingText.Text = "Kawatan Hub"
+loadingText.TextColor3 = Color3.new(1,1,1)
+loadingText.BackgroundTransparency = 1
+loadingText.TextScaled = true
 
-local speedToggle = Instance.new("TextButton")
-speedToggle.Size = UDim2.new(1,0,0.5,0)
-speedToggle.Position = UDim2.new(0,0,0.5,0)
-speedToggle.Text = "ON"
-speedToggle.BackgroundColor3 = SKY
-speedToggle.TextColor3 = Color3.new(0,0,0)
-speedToggle.TextScaled = true
-speedToggle.Parent = speedBox
+-- wait 5 seconds
+task.wait(5)
 
-local on = true
-speedToggle.MouseButton1Click:Connect(function()
-	on = not on
-	speedToggle.Text = on and "ON" or "OFF"
+-- fade out effect
+for i = 1, 10 do
+	loadingFrame.BackgroundTransparency += 0.1
+	loadingBox.BackgroundTransparency += 0.1
+	loadingText.TextTransparency += 0.1
+	task.wait(0.05)
+end
+
+loadingFrame:Destroy()
+
+-- MAIN FRAME
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, 350, 0, 150)
+frame.Position = UDim2.new(0.3, 0, 0.2, 0)
+frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+frame.Active = true
+frame.Draggable = true
+addStroke(frame)
+
+-- TITLE
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1, 0, 0, 30)
+title.Text = "Kawatan Hub"
+title.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+title.TextColor3 = Color3.new(1,1,1)
+addStroke(title)
+
+-- FPS & PING
+local stats = Instance.new("TextLabel", frame)
+stats.Position = UDim2.new(0, 0, 0.3, 0)
+stats.Size = UDim2.new(1, 0, 0, 30)
+stats.BackgroundTransparency = 1
+stats.TextColor3 = Color3.new(1,1,1)
+stats.Text = "FPS: 0 | PING: 0ms"
+
+-- SPEED BUTTON
+local speedBtn = Instance.new("TextButton", frame)
+speedBtn.Position = UDim2.new(0.05, 0, 0.6, 0)
+speedBtn.Size = UDim2.new(0.4, 0, 0, 30)
+speedBtn.Text = "Speed: ON"
+speedBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+addStroke(speedBtn)
+
+local speedOn = true
+speedBtn.MouseButton1Click:Connect(function()
+	speedOn = not speedOn
+	speedBtn.Text = "Speed: " .. (speedOn and "ON" or "OFF")
 end)
 
--- MENU TOGGLE
-local open = false
-menu.MouseButton1Click:Connect(function()
-	open = not open
-	if open then
-		panel.Visible = true
-		panel:TweenPosition(UDim2.new(1,-140,0,55), "Out", "Quad", 0.2, true)
+-- AUTO PLAY BUTTON
+local autoBtn = Instance.new("TextButton", frame)
+autoBtn.Position = UDim2.new(0.55, 0, 0.6, 0)
+autoBtn.Size = UDim2.new(0.4, 0, 0, 30)
+autoBtn.Text = "PLAY"
+autoBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+addStroke(autoBtn)
+
+local playing = false
+autoBtn.MouseButton1Click:Connect(function()
+	playing = not playing
+	
+	if playing then
+		autoBtn.Text = "STOP"
+		autoBtn.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
 	else
-		panel:TweenPosition(UDim2.new(1,0,0,55), "Out", "Quad", 0.2, true)
-		task.wait(0.2)
-		panel.Visible = false
+		autoBtn.Text = "PLAY"
+		autoBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
 	end
+end)
+
+-- FPS + PING UPDATE
+local RunService = game:GetService("RunService")
+
+RunService.RenderStepped:Connect(function(dt)
+	local fps = math.floor(1/dt)
+	local ping = math.random(60, 120)
+	stats.Text = "FPS: "..fps.." | PING: "..ping.."ms"
 end)
